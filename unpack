@@ -1,0 +1,80 @@
+#!/bin/ksh
+alias echo="echo -e"
+error () {
+	  echo "WARNING: Error unpacking from $file"
+	  echo "Continue with operation (y/n)>\c"
+	  read ans
+	  if [ "$ans" = "n" ]
+	  then
+		exit 2
+	  fi
+	 }
+cleanerr () {
+	     echo "WARNING: Error cleaning up $file"
+	     echo "The package will remain in the directory"
+	     echo "Try manually removing when done"
+	    }
+
+#
+# Unpacks files created by 'pack'
+#
+
+if [ "$#" -lt 1 ]
+then
+	echo "Incorrect usage"
+	echo "Usage: $0 [-r] [-e] <package files>"
+	echo "		-r: Remove package files after unpacking"
+	echo "		-e: Specify exit codes"
+	exit 1
+fi
+while getopts er option
+do
+	case "$option"
+	in
+		r) remove=TRUE
+		   OPTIND=1
+		   shift;;
+		e) exitsonly=TRUE
+		   OPTIND=1
+		   shift;;
+	       \?) echo "Error: unknown option $option"
+		   exit 3;;
+	esac
+done
+
+if [ "$exitsonly" = "TRUE" ]
+then
+	echo "$0 exit codes:"
+	echo "0: Normal exit"
+	echo "1: No args passed"
+	echo "2: Unpack error, user pressed no-go"
+	echo "3: Bad options"
+	echo "4: No package specified"
+	echo "5: Exits listed (like now)"
+	exit 5
+fi
+if [ "$1" = "" ]
+then
+	echo "No file to unpack!"
+	echo "Usage: $0 [-r] [-e] <package files>"
+	echo "		-r: Remove package files after unpacking"
+	echo "		-e: Specify exit codes"
+	exit 4
+fi
+if [ "$remove" = "TRUE" ]
+then
+	echo "-r option specified, cleaning up after unpack"
+fi
+for file
+do
+	echo "Unpacking all from $file"
+	ksh $file || error
+	echo "Done with $file"
+	if [ "$remove" = "TRUE" ]
+	then
+		echo "Cleaning up package $file ..."
+		rm "$file" || cleanerr
+	fi
+done
+echo "Operation complete."
+exit 0

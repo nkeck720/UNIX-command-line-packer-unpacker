@@ -1,0 +1,30 @@
+#!/bin/ksh
+#
+# Creates an archive from args
+#
+alias echo="echo -e"
+# If no args
+if [ "$#" -lt 2 ]
+then
+	echo "Incorrect usage"
+	echo "Usage: $0 <outfile> <infile(s)>"
+	exit 1
+fi 
+# Get output file
+exec > "$1"
+shift
+
+#Begin writing process
+echo "#"
+echo "# run 'unpack' to unpack this file"
+echo "#"
+
+for file
+do
+	echo
+	echo "echo Extracting $file"
+	echo "cat > '$file' <<END || exit 1"
+	cat  "$file"
+	echo "END"
+done
+
