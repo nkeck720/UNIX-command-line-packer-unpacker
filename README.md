@@ -1,4 +1,4 @@
-# UNIX-command-line-packer-unpacker
+# UNIX-pack
 This is a simple ksh script to pack together a bunch of files into one file, for ease of file management. It takes only a little more space than all of the files combined.
 # Dependencies
 These scripts require KSH to be present and in the system path. If you haven't already done so, you will need to install KSH.
