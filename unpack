@@ -11,7 +11,7 @@ error () {
 	 }
 cleanerr () {
 	     echo "WARNING: Error cleaning up $file"
-	     echo "The package will remain in the directory"
+	     echo "The glob will remain in the directory"
 	     echo "Try manually removing when done"
 	    }
 
@@ -22,8 +22,8 @@ cleanerr () {
 if [ "$#" -lt 1 ]
 then
 	echo "Incorrect usage"
-	echo "Usage: $0 [-r] [-e] <package files>"
-	echo "		-r: Remove package files after unpacking"
+	echo "Usage: $0 [-r] [-e] <glob files>"
+	echo "		-r: Remove glob files after unpacking"
 	echo "		-e: Specify exit codes"
 	exit 1
 fi
@@ -49,15 +49,15 @@ then
 	echo "1: No args passed"
 	echo "2: Unpack error, user pressed no-go"
 	echo "3: Bad options"
-	echo "4: No package specified"
+	echo "4: No glob specified"
 	echo "5: Exits listed (like now)"
 	exit 5
 fi
 if [ "$1" = "" ]
 then
-	echo "No file to unpack!"
-	echo "Usage: $0 [-r] [-e] <package files>"
-	echo "		-r: Remove package files after unpacking"
+	echo "No glob to unpack!"
+	echo "Usage: $0 [-r] [-e] <glob files>"
+	echo "		-r: Remove glob files after unpacking"
 	echo "		-e: Specify exit codes"
 	exit 4
 fi
@@ -72,7 +72,7 @@ do
 	echo "Done with $file"
 	if [ "$remove" = "TRUE" ]
 	then
-		echo "Cleaning up package $file ..."
+		echo "Cleaning up glob $file ..."
 		rm "$file" || cleanerr
 	fi
 done
